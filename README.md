@@ -7,5 +7,4 @@
 
 ## Video demo flutter testing
 
-[![Watch the video](https://img.youtube.com/vi/fDdt8I4hUyo/hqdefault.jpg)](https://www.youtube.com/embed/<fDdt8I4hUyo)
-
+[![Watch the video](https://img.youtube.com/vi/nbN0yp_7kAk/hqdefault.jpg)](https://www.youtube.com/embed/nbN0yp_7kAk)
