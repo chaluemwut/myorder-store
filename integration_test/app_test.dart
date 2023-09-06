@@ -14,7 +14,6 @@ void main() {
       expect(find.text('เสื้อผ้า'), findsOneWidget);
       expect(find.text('ผลไม้'), findsOneWidget);
       expect(find.text('อุปกรณ์ IT'), findsOneWidget);
-      // expect(find.text('แก้ว'), findsOneWidget);
     });
 
     testWidgets('product-list', (WidgetTester tester) async {

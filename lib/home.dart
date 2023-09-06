@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:istore/data.dart';
 import 'package:istore/mock_api.dart';
 import 'package:istore/product_list.dart';
+import 'package:istore/system/system_instance.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cart.dart';
@@ -38,10 +39,38 @@ class _Home extends State {
                 Text('Category'),
                 if (username != "") Text("Hi, ${username}"),
                 IconButton(
-                    onPressed: () => Navigator.of(context).push(
-                        MaterialPageRoute(
-                            builder: (BuildContext context) => Cart())),
-                    icon: Icon(Icons.shopping_cart))
+                  onPressed: () => Navigator.of(context).push(MaterialPageRoute(
+                      builder: (BuildContext context) => Cart())),
+                  // icon: Icon(Icons.shopping_cart)
+                  icon: Stack(
+                    children: <Widget>[
+                      Icon(Icons.shopping_cart),
+                      if (SystemInstance().cartBeans.length > 0)
+                        Positioned(
+                          right: 0,
+                          child: Container(
+                            padding: EdgeInsets.all(1),
+                            decoration: BoxDecoration(
+                              color: Colors.red,
+                              borderRadius: BorderRadius.circular(6),
+                            ),
+                            constraints: BoxConstraints(
+                              minWidth: 15,
+                              minHeight: 15,
+                            ),
+                            child: Text(
+                              "${SystemInstance().cartBeans.length}",
+                              style: new TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
+                        )
+                    ],
+                  ),
+                )
               ],
             )),
         ...List.generate(_apiMocking.length, (index) {
