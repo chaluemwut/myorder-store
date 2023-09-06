@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:integration_test/integration_test.dart';
 import 'package:istore/main.dart' as app;
+import 'package:shared_preferences/shared_preferences.dart';
 
 void main() {
   IntegrationTestWidgetsFlutterBinding.ensureInitialized();
@@ -40,6 +41,9 @@ void main() {
       var cartButton = find.byKey(Key("cart_btn"));
       await tester.tap(cartButton);
       await tester.pumpAndSettle();
+
+      final sharePreference = await SharedPreferences.getInstance();
+      sharePreference.setString("user", "1");
 
       var addBtn = find.byKey(Key("add_btn"));
       var removeBtn = find.byKey(Key("remove_btn"));

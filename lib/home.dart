@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:istore/data.dart';
 import 'package:istore/mock_api.dart';
 import 'package:istore/product_list.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'cart.dart';
 
@@ -14,6 +15,15 @@ class Home extends StatefulWidget {
 
 class _Home extends State {
   List<Category> _apiMocking = MockAPI().getCategories();
+  String username = "";
+
+  @override
+  void initState() {
+    SharedPreferences.getInstance().then((ins) {
+      username = ins.getString("user")!;
+      setState(() {});
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +36,7 @@ class _Home extends State {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text('Category'),
+                if (username != "") Text("Hi, ${username}"),
                 IconButton(
                     onPressed: () => Navigator.of(context).push(
                         MaterialPageRoute(

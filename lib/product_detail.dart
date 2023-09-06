@@ -6,6 +6,8 @@ import 'package:istore/cart.dart';
 import 'package:istore/data.dart';
 import 'package:istore/mock_api.dart';
 import 'package:istore/system/system_instance.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProductDetail extends StatefulWidget {
   int productId;
@@ -93,24 +95,44 @@ class _ProductDetail extends State<ProductDetail> {
                 Center(
                     child: ElevatedButton(
                         key: Key("cart_btn"),
-                        onPressed: () {
-                          SystemInstance systemInstance = SystemInstance();
-                          CartBean instanceCartBean = systemInstance.cartBeans
-                              .firstWhere(
-                                  (element) => element.productId == _product.id,
-                                  orElse: () => CartBean(
-                                      this._product.id,
-                                      this._product.name,
-                                      this._product.price,
-                                      0,
-                                      this._product.imgURL[0]));
-                          if (instanceCartBean.itemCount == 0) {
-                            systemInstance.cartBeans.add(instanceCartBean);
+                        onPressed: () async {
+                          final sharePreference =
+                              await SharedPreferences.getInstance();
+                          String? shareUser = sharePreference.getString("user");
+                          if (shareUser == null) {
+                            GoogleSignIn _googleSignIn = GoogleSignIn(
+                              scopes: [
+                                'email',
+                                'https://www.googleapis.com/auth/contacts.readonly',
+                              ],
+                            );
+                            try {
+                              var user = await _googleSignIn.signIn();
+                              sharePreference.setString(
+                                  "user", user!.displayName ?? '');
+                            } catch (error) {
+                              print(error);
+                            }
+                          } else {
+                            SystemInstance systemInstance = SystemInstance();
+                            CartBean instanceCartBean = systemInstance.cartBeans
+                                .firstWhere(
+                                    (element) =>
+                                        element.productId == _product.id,
+                                    orElse: () => CartBean(
+                                        this._product.id,
+                                        this._product.name,
+                                        this._product.price,
+                                        0,
+                                        this._product.imgURL[0]));
+                            if (instanceCartBean.itemCount == 0) {
+                              systemInstance.cartBeans.add(instanceCartBean);
+                            }
+                            instanceCartBean.itemCount =
+                                instanceCartBean.itemCount + 1;
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (BuildContext context) => Cart()));
                           }
-                          instanceCartBean.itemCount =
-                              instanceCartBean.itemCount + 1;
-                          Navigator.of(context).push(MaterialPageRoute(
-                              builder: (BuildContext context) => Cart()));
                         },
                         child: Text('เพิ่มใส่ตะกร้า'))),
                 Padding(
