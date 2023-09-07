@@ -15,11 +15,12 @@ class Home extends StatefulWidget {
 }
 
 class _Home extends State {
-  List<Category> _apiMocking = MockAPI().getCategories();
+  final List<Category> _apiMocking = MockAPI().getCategories();
   String username = "";
 
   @override
   void initState() {
+    super.initState();
     SharedPreferences.getInstance().then((ins) {
       username = ins.getString("user")!;
       setState(() {});
@@ -32,12 +33,12 @@ class _Home extends State {
         body: SafeArea(
       child: ListView(children: [
         Padding(
-            padding: EdgeInsets.only(top: 15, bottom: 5, left: 5),
+            padding: const EdgeInsets.only(top: 15, bottom: 5, left: 5),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text('Category'),
-                if (username != "") Text("Hi, ${username}"),
+                const Text('Category'),
+                if (username != "") Text("Hi, $username"),
                 IconButton(
                   onPressed: () => Navigator.of(context).push(MaterialPageRoute(
                       builder: (BuildContext context) => Cart())),
